@@ -9,15 +9,19 @@
 import Foundation
 import os.log
 
-public func tryOutput() {
-    let file = #file.components(separatedBy: "/").last
-    os_log("%@:%@ Here we are! %@", file!, #line.description, #function)
-}
-
 public func logThis(items: Any..., file: String = #file, line: Int = #line, function: String = #function) {
-    if let f = file.components(separatedBy: "/").last {
+    // Yes, ridiculous overhead, but just getting going
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = .medium
+    dateFormatter.timeStyle = .none
+    dateFormatter.locale = Locale(identifier: "en_US")
+    dateFormatter.timeZone = TimeZone(identifier: "US/Pacific")
+    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+
+    if let fileName = file.components(separatedBy: "/").last {
         if let callSiteMessage = items.last as? String {
-            os_log("%@:%@ %@ %@", f, line.description, function.description, callSiteMessage )
+            let dateString = dateFormatter.string(from: Date())
+            print("\(dateString) \(fileName):\(line.description) \(function.description) \(callSiteMessage)")
         }
     } else {
         print("[\(function)][\(line)]: ", items)
