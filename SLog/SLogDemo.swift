@@ -18,6 +18,8 @@ public func logThis(items: Any..., file: String = #file, line: Int = #line, func
     dateFormatter.timeZone = TimeZone(identifier: "US/Pacific")
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
 
+    // This obviously isn't real b/c of the fact that it doesn't actually log anything
+    // to the macOS Console
     if let fileName = file.components(separatedBy: "/").last {
         if let callSiteMessage = items.last as? String {
             let dateString = dateFormatter.string(from: Date())
