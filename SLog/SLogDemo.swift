@@ -20,12 +20,30 @@ public func logThis(items: Any..., file: String = #file, line: Int = #line, func
 
     // This obviously isn't real b/c of the fact that it doesn't actually log anything
     // to the macOS Console
+//    if let fileName = file.components(separatedBy: "/").last {
+//        if let callSiteMessage = items.last as? String {
+//            let dateString = dateFormatter.string(from: Date())
+//            print("\(dateString) \(fileName):\(line.description) \(function.description) \(callSiteMessage)")
+//        }
+//    } else {
+//        print("[\(function)][\(line)]: ", items)
+//    }
+
+    struct Log {
+        static var general = OSLog(subsystem: "com.singularityfund.logging", category: "billion")
+    }
+
     if let fileName = file.components(separatedBy: "/").last {
         if let callSiteMessage = items.last as? String {
             let dateString = dateFormatter.string(from: Date())
-            print("\(dateString) \(fileName):\(line.description) \(function.description) \(callSiteMessage)")
+            os_log("%{public}@ %{public}@:%{public}@ %{public}@",
+                   log: Log.general,
+                   type: .debug,
+                   dateString, fileName, function.description, callSiteMessage)
+//            print("\(dateString) \(fileName):\(line.description) \(function.description) \(callSiteMessage)")
         }
     } else {
         print("[\(function)][\(line)]: ", items)
     }
+
 }
