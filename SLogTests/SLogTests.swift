@@ -22,6 +22,6 @@ class SLogTests: XCTestCase {
     }
     
     func testLogThis() {
-        logThis(items: "Log This!")
+        logThis(items: "Hello World!")
     }
 }
